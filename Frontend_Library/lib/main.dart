@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'presentation/screens/home_screen.dart';
-import 'presentation/screens/login_screen.dart';
-import 'providers/user_provider.dart';
-import 'core/theme/app_theme.dart';
+import 'package:frontend_library/presentation/screens/auth/login_screen.dart';
+import 'package:frontend_library/presentation/screens/home_screen.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-      ],
-      child: const LibraryApp(),
-    ),
-  );
+  runApp(const LibraryApp());
 }
 
 class LibraryApp extends StatelessWidget {
@@ -24,12 +14,15 @@ class LibraryApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Quản lý thư viện',
-      theme: AppTheme.lightTheme,
-      home: Consumer<UserProvider>(
-        builder: (context, userProvider, child) {
-          return userProvider.isLoggedIn ? const HomeScreen() : const LoginScreen();
-        },
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+      },
     );
   }
 }

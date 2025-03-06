@@ -1,69 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../providers/user_provider.dart';
-import '../management/book_management_screen.dart';
-import '../management/reader_management_screen.dart';
-import '../management/publisher_management_screen.dart';
-import '../management/rental_management_screen.dart';
-import '../management/statistics_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? _errorMessage;
+
+  void _login() {
+    if (_formKey.currentState!.validate()) {
+      String username = _usernameController.text;
+      String password = _passwordController.text;
+
+      if (username == 'admin' && password == '123') {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        setState(() {
+          _errorMessage = "Sai tài khoản hoặc mật khẩu!";
+        });
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Quản lý Thư Viện"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              Provider.of<UserProvider>(context, listen: false).logout();
-            },
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Đăng nhập')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          children: [
-            _buildMenuButton(context, Icons.book, "Quản lý Sách", Colors.blue, 
-              () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BookManagementScreen()))),
-            _buildMenuButton(context, Icons.people, "Quản lý Độc Giả", Colors.green, 
-              () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ReaderManagementScreen()))),
-            _buildMenuButton(context, Icons.business, "Quản lý Nhà Xuất Bản", Colors.orange, 
-              () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PublisherManagementScreen()))),
-            _buildMenuButton(context, Icons.assignment, "Quản lý Phiếu Thuê", Colors.purple, 
-              () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RentalManagementScreen()))),
-            _buildMenuButton(context, Icons.bar_chart, "Thống Kê", Colors.red, 
-              () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StatisticsScreen()))),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: _usernameController,
+                decoration: const InputDecoration(
+                  labelText: 'Tài khoản',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) =>
+                    value!.isEmpty ? 'Vui lòng nhập tài khoản' : null,
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
+                  labelText: 'Mật khẩu',
+                  border: OutlineInputBorder(),
+                ),
+                obscureText: true,
+                validator: (value) =>
+                    value!.isEmpty ? 'Vui lòng nhập mật khẩu' : null,
+              ),
+              const SizedBox(height: 10),
+              if (_errorMessage != null)
+                Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _login,
+                child: const Text('Đăng nhập'),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildMenuButton(BuildContext context, IconData icon, String title, Color color, VoidCallback onTap) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-      onPressed: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: Colors.white),
-          const SizedBox(height: 10),
-          Text(title, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
-        ],
       ),
     );
   }
