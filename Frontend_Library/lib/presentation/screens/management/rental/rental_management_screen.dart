@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:frontend_library/core/constants.dart';
+import 'package:frontend_library/core/api/constants.dart';
 import 'package:frontend_library/presentation/screens/management/rental/add_rental_screen.dart';
 import 'package:frontend_library/presentation/screens/management/rental/edit_rental_screen.dart';
+import 'package:intl/intl.dart';
 
+String formatDate(String? dateString) {
+  if (dateString == null || dateString.isEmpty) return "Chưa trả";
+  try {
+    DateTime date = DateTime.parse(dateString);
+    return DateFormat("MM-dd-yyyy").format(date);
+  } catch (e) {
+    return "Không hợp lệ";
+  }
+}
 class BorrowingManagementScreen extends StatefulWidget {
   const BorrowingManagementScreen({super.key});
 
@@ -117,32 +127,43 @@ class _BorrowingManagementScreenState extends State<BorrowingManagementScreen> {
                           itemCount: filteredBorrowings.length,
                           itemBuilder: (context, index) {
                             final borrowing = filteredBorrowings[index];
-                            return Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Mã phiếu: ${borrowing["borrowingId"]}",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      )),
-                                    Text("Người thuê: ${borrowing["memberName"] ?? "Không xác định"}"),
-                                    Text("Ngày thuê: ${borrowing["borrowDate"]}"),
-                                    Text("Hạn trả: ${borrowing["dueDate"]}"),
-                                    Text("Ngày trả: ${borrowing["returnDate"] ?? "Chưa trả"}",
-                                      style: TextStyle(
-                                        color: borrowing["returnDate"] == null
-                                            ? Colors.red
-                                            : Colors.green,
-                                      )),
-                                  ],
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditRentalScreen(borrowId: borrowing["borrowingId"]),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Mã phiếu: ${borrowing["borrowingId"]}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          )),
+                                      Text("Người thuê: ${borrowing["memberName"] ?? "Không xác định"}"),
+                                      Text("Ngày thuê: ${formatDate(borrowing["borrowDate"])}"),
+                                      Text("Hạn trả: ${formatDate(borrowing["dueDate"])}"),
+                                      Text(
+                                        "Ngày trả: ${formatDate(borrowing["returnDate"])}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: borrowing["returnDate"] != null && borrowing["returnDate"] != "" ? Colors.green : Colors.red,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

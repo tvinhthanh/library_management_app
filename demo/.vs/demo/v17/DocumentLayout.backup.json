@@ -1,0 +1,160 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\controllers\\bookcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:controllers\\bookcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\controllers\\borrowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:controllers\\borrowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\models\\borrowdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:models\\borrowdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\dto\\borrowdetaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:dto\\borrowdetaildto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\dto\\bookdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:dto\\bookdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\dto\\borrowdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:dto\\borrowdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|c:\\users\\vinht\\desktop\\libraryapp\\demo\\controllers\\publishercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{30829009-0FAF-422F-A077-6750C15E11C2}|demo.csproj|solutionrelative:controllers\\publishercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BookController.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\BookController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BookController.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\BookController.cs",
+              "RelativeToolTip": "Controllers\\BookController.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAqwFEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T19:54:01.127Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BookDTO.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\DTO\\BookDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\BookDTO.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\DTO\\BookDTO.cs",
+              "RelativeToolTip": "DTO\\BookDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T19:34:53.919Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BorrowDTO.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\DTO\\BorrowDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\BorrowDTO.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\DTO\\BorrowDTO.cs",
+              "RelativeToolTip": "DTO\\BorrowDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T17:57:52.149Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BorrowDetailDTO.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\DTO\\BorrowDetailDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\BorrowDetailDTO.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\DTO\\BorrowDetailDTO.cs",
+              "RelativeToolTip": "DTO\\BorrowDetailDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T17:57:40.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BorrowDetail.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Models\\BorrowDetail.cs",
+              "RelativeDocumentMoniker": "Models\\BorrowDetail.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Models\\BorrowDetail.cs",
+              "RelativeToolTip": "Models\\BorrowDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T17:00:56.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BorrowController.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\BorrowController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BorrowController.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\BorrowController.cs",
+              "RelativeToolTip": "Controllers\\BorrowController.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAmwGgAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T16:42:40.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\CategoryController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\CategoryController.cs",
+              "RelativeToolTip": "Controllers\\CategoryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T16:42:34.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PublisherController.cs",
+              "DocumentMoniker": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\PublisherController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PublisherController.cs",
+              "ToolTip": "C:\\Users\\vinht\\Desktop\\LibraryApp\\demo\\Controllers\\PublisherController.cs",
+              "RelativeToolTip": "Controllers\\PublisherController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T16:42:31.891Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

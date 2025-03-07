@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:frontend_library/core/constants.dart';
+import 'package:frontend_library/core/api/constants.dart';
 import 'package:frontend_library/presentation/screens/management/publisher/add_publisher_screen.dart';
 import 'package:frontend_library/presentation/screens/management/publisher/edit_publisher_screen.dart';
 

@@ -7,7 +7,7 @@ namespace demo.Models
     {
         public int BorrowDetailId { get; set; }
         public int BorrowId { get; set; }
-        public int BookId { get; set; }
+        public int? BookId { get; set; }
         public int Quantity { get; set; }
 
         public virtual Book Book { get; set; } = null!;

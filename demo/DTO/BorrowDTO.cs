@@ -9,6 +9,6 @@ namespace demo.DTO
         public DateTime BorrowDate { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime? ReturnDate { get; set; }
-
+        public List<BorrowDetailDTO> BorrowDetails { get; internal set; }
     }
 }

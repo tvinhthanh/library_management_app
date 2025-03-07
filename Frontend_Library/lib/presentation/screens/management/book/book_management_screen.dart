@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_library/core/constants.dart';
+import 'package:frontend_library/core/api/constants.dart';
 import 'package:frontend_library/presentation/screens/management/book/add_book_srceen.dart';
 import 'package:frontend_library/presentation/screens/management/book/edit_book_screen.dart';
 import 'package:http/http.dart' as http;
@@ -211,7 +211,7 @@ class _BookHomePageState extends State<BookHomePage> {
                                   final result = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => EditBookScreen(bookId: book),
+                                      builder: (context) => EditBookScreen(bookId: book["bookId"]),
                                     ),
                                   );
 

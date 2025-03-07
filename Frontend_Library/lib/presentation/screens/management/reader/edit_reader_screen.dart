@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:frontend_library/core/constants.dart';
+import 'package:frontend_library/core/api/constants.dart';
 import 'package:intl/intl.dart';
 
 class EditReaderScreen extends StatefulWidget {
@@ -38,7 +38,7 @@ class _EditReaderScreenState extends State<EditReaderScreen> {
         final data = jsonDecode(response.body);
         setState(() {
           nameController.text = data['name'] ?? "";
-          dobController.text = data['dateOfBirth'] ?? ""; // Nếu null thì giữ rỗng
+          dobController.text = data['dateOfBirth'] ?? ""; 
           addressController.text = data['address'] ?? "";
           phoneController.text = data['phone'] ?? "";
           emailController.text = data['email'] ?? "";

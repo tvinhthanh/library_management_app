@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_library/core/constants.dart';
+import 'package:frontend_library/core/api/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

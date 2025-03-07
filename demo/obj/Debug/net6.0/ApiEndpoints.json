@@ -185,6 +185,69 @@
   },
   {
     "ContainingType": "demo.Controllers.BorrowController",
+    "Method": "AddBookToBorrow",
+    "RelativePath": "api/borrow/{borrowId}/add-book",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "borrowId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "demo.DTO.BorrowDetailDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "demo.Controllers.BorrowController",
+    "Method": "RemoveBookFromBorrowing",
+    "RelativePath": "api/borrow/{borrowId}/remove-book/{bookId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "borrowId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "bookId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "demo.Controllers.BorrowController",
+    "Method": "ReturnBorrow",
+    "RelativePath": "api/borrow/{borrowId}/return",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "borrowId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "returnDate",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "demo.Controllers.BorrowController",
     "Method": "GetBorrowById",
     "RelativePath": "api/borrow/{id}",
     "HttpMethod": "GET",

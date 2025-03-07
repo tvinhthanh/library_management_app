@@ -380,6 +380,111 @@
         }
       }
     },
+    "/api/borrow/{borrowId}/add-book": {
+      "post": {
+        "tags": [
+          "Borrow"
+        ],
+        "parameters": [
+          {
+            "name": "borrowId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BorrowDetailDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BorrowDetailDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BorrowDetailDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/borrow/{borrowId}/return": {
+      "put": {
+        "tags": [
+          "Borrow"
+        ],
+        "parameters": [
+          {
+            "name": "borrowId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "returnDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/borrow/{borrowId}/remove-book/{bookId}": {
+      "delete": {
+        "tags": [
+          "Borrow"
+        ],
+        "parameters": [
+          {
+            "name": "borrowId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/category": {
       "get": {
         "tags": [
@@ -1057,6 +1162,14 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "borrowDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BorrowDetailDTO"
+            },
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -1074,7 +1187,8 @@
           },
           "bookId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "quantity": {
             "type": "integer",
@@ -1085,6 +1199,29 @@
           },
           "borrow": {
             "$ref": "#/components/schemas/Borrowing"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BorrowDetailDTO": {
+        "type": "object",
+        "properties": {
+          "borrowDetailId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "borrowId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bookId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
