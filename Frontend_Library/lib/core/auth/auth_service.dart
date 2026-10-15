@@ -26,7 +26,7 @@ class AuthService {
           "fullName": fullName,
         }),
       );
-      return _handleAuthResponse(response.statusCode, response.body, 'Đăng ký thất bại.');
+      return await _handleAuthResponse(response.statusCode, response.body, 'Đăng ký thất bại.');
     } catch (_) {
       return const AuthResult(false, 'Không kết nối được tới máy chủ.');
     }
@@ -42,7 +42,7 @@ class AuthService {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"username": username, "password": password}),
       );
-      return _handleAuthResponse(response.statusCode, response.body, 'Đăng nhập thất bại.');
+      return await _handleAuthResponse(response.statusCode, response.body, 'Đăng nhập thất bại.');
     } catch (_) {
       return const AuthResult(false, 'Không kết nối được tới máy chủ.');
     }
