@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_library/presentation/screens/auth/login_screen.dart';
+import 'package:frontend_library/core/auth/auth_service.dart';
 import 'package:frontend_library/presentation/screens/management/author/author_management_screen.dart';
 import 'package:frontend_library/presentation/screens/management/book/book_management_screen.dart';
 import 'package:frontend_library/presentation/screens/management/category/category_management_screen.dart';
@@ -78,8 +78,10 @@ class HomeScreen extends StatelessWidget {
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text("Hủy")),
           TextButton(
-            onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+            onPressed: () async {
+              await AuthService.logout();
+              if (!context.mounted) return;
+              Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
             },
             child: const Text("Đăng xuất"),
           ),

@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -39,7 +40,7 @@ class _BorrowingManagementScreenState extends State<BorrowingManagementScreen> {
 
   Future<void> fetchBorrowings() async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/borrow"),
         headers: {"Content-Type": "application/json"},
       );
@@ -70,7 +71,7 @@ class _BorrowingManagementScreenState extends State<BorrowingManagementScreen> {
 
   Future<String> fetchMemberName(int memberId) async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/user/member/$memberId"),
         headers: {"Content-Type": "application/json"},
       );

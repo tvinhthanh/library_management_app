@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -31,7 +32,7 @@ class _AddBookToRentalScreenState extends State<AddBookToRentalScreen> {
     });
 
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/book"),
         headers: {"Content-Type": "application/json"},
       );
@@ -67,7 +68,7 @@ class _AddBookToRentalScreenState extends State<AddBookToRentalScreen> {
   }
 
   try {
-    final response = await http.post(
+    final response = await ApiClient.post(
       Uri.parse("$apiBaseUrl/borrow/${widget.borrowId}/add-book"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({

@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_library/core/api/constants.dart';
 import 'package:frontend_library/presentation/screens/management/book/add_book_srceen.dart';
@@ -45,7 +46,7 @@ class _BookHomePageState extends State<BookHomePage> {
   }
 
   Future<void> fetchBooks() async {
-    final response = await http.get(Uri.parse("$apiBaseUrl/book"));
+    final response = await ApiClient.get(Uri.parse("$apiBaseUrl/book"));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -65,7 +66,7 @@ class _BookHomePageState extends State<BookHomePage> {
   }
 
   Future<String> fetchAuthorById(int authorId) async {
-    final response = await http.get(Uri.parse("$apiBaseUrl/author/$authorId"));
+    final response = await ApiClient.get(Uri.parse("$apiBaseUrl/author/$authorId"));
 
     if (response.statusCode == 200) {
       final author = json.decode(response.body);
@@ -76,7 +77,7 @@ class _BookHomePageState extends State<BookHomePage> {
   }
 
  Future<void> deleteBook(int id) async {
-  final response = await http.delete(Uri.parse("$apiBaseUrl/book/$id"));
+  final response = await ApiClient.delete(Uri.parse("$apiBaseUrl/book/$id"));
 
   if (response.statusCode == 200) {
     ScaffoldMessenger.of(context).showSnackBar(

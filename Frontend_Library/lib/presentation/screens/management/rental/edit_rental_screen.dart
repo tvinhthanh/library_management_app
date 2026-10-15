@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -30,7 +31,7 @@ class _EditRentalScreenState extends State<EditRentalScreen> {
 
   Future<void> fetchBorrowDetails() async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/borrow/${widget.borrowId}"),
         headers: {"Content-Type": "application/json"},
       );
@@ -70,7 +71,7 @@ class _EditRentalScreenState extends State<EditRentalScreen> {
 
   Future<String> fetchMemberName(int memberId) async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/user/member/$memberId"),
         headers: {"Content-Type": "application/json"},
       );
@@ -86,7 +87,7 @@ class _EditRentalScreenState extends State<EditRentalScreen> {
 
   Future<String> fetchBookTitle(int bookId) async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/book/$bookId"),
         headers: {"Content-Type": "application/json"},
       );
@@ -117,7 +118,7 @@ class _EditRentalScreenState extends State<EditRentalScreen> {
 
   Future<void> updateRental() async {
     try {
-      final response = await http.put(
+      final response = await ApiClient.put(
         Uri.parse("$apiBaseUrl/borrow/${widget.borrowId}/return?returnDate=${returnDateController.text}"),
         headers: {"Content-Type": "application/json"},
       );
@@ -138,7 +139,7 @@ class _EditRentalScreenState extends State<EditRentalScreen> {
       final url = "$apiBaseUrl/borrow/${widget.borrowId}/remove-book/${bookId}";
       print("Calling API: $url");
 
-      final response = await http.delete(
+      final response = await ApiClient.delete(
         Uri.parse(url),
         headers: {"Content-Type": "application/json"},
       );

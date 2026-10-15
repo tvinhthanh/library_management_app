@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -23,7 +24,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   }
 
   Future<void> fetchCategory() async {
-    final response = await http.get(Uri.parse("$apiBaseUrl/category/${widget.categoryId}"));
+    final response = await ApiClient.get(Uri.parse("$apiBaseUrl/category/${widget.categoryId}"));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       setState(() {
@@ -38,7 +39,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   Future<void> updateCategory() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final response = await http.put(
+    final response = await ApiClient.put(
       Uri.parse("$apiBaseUrl/category/${widget.categoryId}"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"categoryName": nameController.text}),

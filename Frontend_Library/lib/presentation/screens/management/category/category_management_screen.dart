@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -26,7 +27,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
 
   Future<void> fetchCategories() async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/category"),
         headers: {"Content-Type": "application/json"},
       );
@@ -51,7 +52,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen> {
 
   Future<void> deleteCategory(int id) async {
     try {
-      final response = await http.delete(Uri.parse("$apiBaseUrl/category/$id"));
+      final response = await ApiClient.delete(Uri.parse("$apiBaseUrl/category/$id"));
 
       if (response.statusCode == 200) {
         setState(() {

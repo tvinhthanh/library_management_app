@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_library/core/api/constants.dart';
 import 'package:http/http.dart' as http;
@@ -34,9 +35,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
 
   Future<void> fetchDropdownData() async {
     try {
-      final authorsResponse = await http.get(Uri.parse("$apiBaseUrl/author"));
-      final categoriesResponse = await http.get(Uri.parse("$apiBaseUrl/category"));
-      final publishersResponse = await http.get(Uri.parse("$apiBaseUrl/publishers"));
+      final authorsResponse = await ApiClient.get(Uri.parse("$apiBaseUrl/author"));
+      final categoriesResponse = await ApiClient.get(Uri.parse("$apiBaseUrl/category"));
+      final publishersResponse = await ApiClient.get(Uri.parse("$apiBaseUrl/publishers"));
 
       if (authorsResponse.statusCode == 200 &&
           categoriesResponse.statusCode == 200 &&
@@ -79,7 +80,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
       "quantity": int.tryParse(quantityController.text) ?? 1,
     };
 
-    final response = await http.post(
+    final response = await ApiClient.post(
       Uri.parse("$apiBaseUrl/book"),
       headers: {"Content-Type": "application/json"},
       body: json.encode(bookData),

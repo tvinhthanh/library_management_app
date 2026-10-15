@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -50,7 +51,7 @@ class _AddReaderScreenState extends State<AddReaderScreen> {
     print("Dữ liệu gửi lên API: ${jsonEncode(requestBody)}");
 
     try {
-      final response = await http.post(
+      final response = await ApiClient.post(
         Uri.parse("$apiBaseUrl/user/member"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestBody),

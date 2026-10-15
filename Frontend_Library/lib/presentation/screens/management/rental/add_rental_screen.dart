@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,7 +25,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
   }
 
   Future<void> fetchAllMembers() async {
-    final response = await http.get(Uri.parse("$apiBaseUrl/user/member/all"));
+    final response = await ApiClient.get(Uri.parse("$apiBaseUrl/user/member/all"));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
@@ -46,7 +47,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
       return;
     }
 
-    final response = await http.post(
+    final response = await ApiClient.post(
       Uri.parse("$apiBaseUrl/borrow"),
       headers: {"Content-Type": "application/json"},
       body: json.encode({

@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +31,7 @@ class _EditReaderScreenState extends State<EditReaderScreen> {
   /// Hàm lấy thông tin độc giả từ API
   Future<void> _fetchReaderDetails() async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/user/member/${widget.readerId}"),
       );
 
@@ -65,7 +66,7 @@ class _EditReaderScreenState extends State<EditReaderScreen> {
     };
 
     try {
-      final response = await http.put(
+      final response = await ApiClient.put(
         Uri.parse("$apiBaseUrl/user/member/${widget.readerId}"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(requestData),

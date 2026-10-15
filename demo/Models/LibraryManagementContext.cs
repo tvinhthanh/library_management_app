@@ -24,6 +24,7 @@ namespace demo.Models
         public virtual DbSet<Member> Members { get; set; } = null!;
         public virtual DbSet<Publisher> Publishers { get; set; } = null!;
         public virtual DbSet<staff> staff { get; set; } = null!;
+        public virtual DbSet<UserAccount> UserAccounts { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

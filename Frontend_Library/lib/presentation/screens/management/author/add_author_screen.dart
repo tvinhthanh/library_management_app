@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,7 +25,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
     setState(() => isLoading = true);
 
     try {
-      final response = await http.post(
+      final response = await ApiClient.post(
         Uri.parse("$apiBaseUrl/author"),
         headers: {"Content-Type": "application/json"},
         body: json.encode({

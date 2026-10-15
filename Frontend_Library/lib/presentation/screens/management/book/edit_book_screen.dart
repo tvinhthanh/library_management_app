@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_library/core/api/constants.dart';
 import 'package:http/http.dart' as http;
@@ -36,7 +37,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
   Future<void> fetchBookDetails() async {
     print("Bắt đầu gọi API...");
     try {
-      final response = await http.get(Uri.parse('$apiBaseUrl/book/${widget.bookId}'));
+      final response = await ApiClient.get(Uri.parse('$apiBaseUrl/book/${widget.bookId}'));
       print("Trạng thái API: ${response.statusCode}");
 
       if (response.statusCode == 200) {
@@ -95,7 +96,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
     print("Dữ liệu gửi lên API: $bookData");
 
     try {
-      final response = await http.put(
+      final response = await ApiClient.put(
         Uri.parse("$apiBaseUrl/book/${widget.bookId}"),
         headers: {"Content-Type": "application/json"},
         body: json.encode(bookData),
@@ -118,7 +119,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
 
   Future<void> fetchAuthorName(int authorId) async {
     try {
-      final response = await http.get(Uri.parse('$apiBaseUrl/author/$authorId'));
+      final response = await ApiClient.get(Uri.parse('$apiBaseUrl/author/$authorId'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         setState(() => authorName = data["name"] ?? "Không có dữ liệu");
@@ -132,7 +133,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
 
   Future<void> fetchCategoryName(int categoryId) async {
     try {
-      final response = await http.get(Uri.parse('$apiBaseUrl/category/$categoryId'));
+      final response = await ApiClient.get(Uri.parse('$apiBaseUrl/category/$categoryId'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         setState(() => categoryName = data["categoryName"] ?? "Không có dữ liệu");
@@ -146,7 +147,7 @@ class _EditBookScreenState extends State<EditBookScreen> {
 
   Future<void> fetchPublisherName(int publisherId) async {
     try {
-      final response = await http.get(Uri.parse('$apiBaseUrl/publishers/$publisherId'));
+      final response = await ApiClient.get(Uri.parse('$apiBaseUrl/publishers/$publisherId'));
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         setState(() => publisherName = data["publisherName"] ?? "Không có dữ liệu");

@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,7 +26,7 @@ class _EditPublisherScreenState extends State<EditPublisherScreen> {
 
   Future<void> fetchPublisher() async {
     try {
-      final response = await http.get(
+      final response = await ApiClient.get(
         Uri.parse("$apiBaseUrl/publisher/${widget.publisherId}"),
         headers: {"Content-Type": "application/json"},
       );
@@ -58,7 +59,7 @@ class _EditPublisherScreenState extends State<EditPublisherScreen> {
 
     setState(() => isSaving = true);
     try {
-      final response = await http.put(
+      final response = await ApiClient.put(
         Uri.parse("$apiBaseUrl/publisher/${widget.publisherId}"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({

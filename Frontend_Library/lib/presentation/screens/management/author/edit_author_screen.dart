@@ -1,3 +1,4 @@
+import 'package:frontend_library/core/api/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,7 +26,7 @@ class _EditAuthorScreenState extends State<EditAuthorScreen> {
 
   Future<void> fetchAuthorDetails() async {
     try {
-      final response = await http.get(Uri.parse("$apiBaseUrl/author/${widget.authorId}"));
+      final response = await ApiClient.get(Uri.parse("$apiBaseUrl/author/${widget.authorId}"));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -52,7 +53,7 @@ class _EditAuthorScreenState extends State<EditAuthorScreen> {
     setState(() => isUpdating = true);
 
     try {
-      final response = await http.put(
+      final response = await ApiClient.put(
         Uri.parse("$apiBaseUrl/author/${widget.authorId}"),
         headers: {"Content-Type": "application/json"},
         body: json.encode({
