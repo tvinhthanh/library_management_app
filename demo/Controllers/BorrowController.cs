@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using demo.Models;
-using System.Linq;
-using System.Collections.Generic;
 using demo.DTO;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
 namespace demo.Controllers
@@ -67,12 +64,18 @@ namespace demo.Controllers
             return Ok(borrow);
         }
 
-        // Thêm phiếu mượn mới kèm danh sách sách mượn
+        // Thêm phiếu mượn mới (chưa có sách)
         [HttpPost]
-        public IActionResult CreateBorrow([FromBody] BorrowDTO request)
+        public async Task<IActionResult> CreateBorrow([FromBody] BorrowDTO request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            if (request.MemberId == null || !await _context.Members.AnyAsync(m => m.MemberId == request.MemberId.Value))
+                return BadRequest(new { message = "Thành viên không tồn tại." });
+
+            if (request.DueDate.Date < DateTime.Today)
+                return BadRequest(new { message = "Hạn trả không được trước hôm nay." });
 
             var borrow = new Borrowing
             {
@@ -84,152 +87,198 @@ namespace demo.Controllers
             };
 
             _context.Borrowings.Add(borrow);
-            _context.SaveChanges(); // Lưu vào database
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetBorrowById), new { id = borrow.BorrowingId }, borrow);
         }
 
+        // Thêm sách vào phiếu mượn: trừ tồn kho, cộng dồn nếu sách đã có trong phiếu
         [HttpPost("{borrowId}/add-book")]
-        public IActionResult AddBookToBorrow(int borrowId, [FromBody] BorrowDetailDTO request)
+        public async Task<IActionResult> AddBookToBorrow(int borrowId, [FromBody] BorrowDetailDTO request)
         {
-            if (request == null || request.BookId <= 0)
-            {
+            if (request == null || request.BookId == null || request.BookId <= 0)
                 return BadRequest("Thông tin sách không hợp lệ.");
-            }
 
-            var borrow = _context.Borrowings.Find(borrowId);
+            if (request.Quantity < 1)
+                return BadRequest("Số lượng phải lớn hơn 0.");
+
+            var bookId = request.BookId.Value;
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var borrow = await _context.Borrowings.FindAsync(borrowId);
             if (borrow == null)
                 return NotFound("Không tìm thấy phiếu mượn!");
 
-            // ✅ Sửa: Thêm đúng entity vào database
-            var newBorrowDetail = new BorrowDetail
+            if (borrow.ReturnDate != null)
+                return BadRequest("Phiếu mượn đã trả, không thể thêm sách.");
+
+            var book = await _context.Books.FindAsync(bookId);
+            if (book == null)
+                return NotFound("Không tìm thấy sách!");
+
+            var available = book.Quantity ?? 0;
+            if (request.Quantity > available)
+                return BadRequest(new { message = $"Không đủ sách trong kho. Hiện còn {available} cuốn." });
+
+            book.Quantity = available - request.Quantity;
+
+            var detail = await _context.BorrowDetails
+                .FirstOrDefaultAsync(d => d.BorrowId == borrowId && d.BookId == bookId);
+
+            if (detail == null)
             {
-                BorrowId = borrowId,
-                BookId = request.BookId,
-                Quantity = request.Quantity
-            };
-
-            _context.BorrowDetails.Add(newBorrowDetail);
-            _context.SaveChanges();
-
-            var responseDto = new BorrowDetailDTO
+                detail = new BorrowDetail
+                {
+                    BorrowId = borrowId,
+                    BookId = bookId,
+                    Quantity = request.Quantity
+                };
+                _context.BorrowDetails.Add(detail);
+            }
+            else
             {
-                BorrowId = newBorrowDetail.BorrowId,
-                BookId = newBorrowDetail.BookId,
-                Quantity = newBorrowDetail.Quantity
-            };
+                detail.Quantity += request.Quantity;
+            }
 
-            return Ok(responseDto);
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return Ok(new BorrowDetailDTO
+            {
+                BorrowDetailId = detail.BorrowDetailId,
+                BorrowId = detail.BorrowId,
+                BookId = detail.BookId,
+                Quantity = detail.Quantity
+            });
         }
 
-
-        // Cập nhật phiếu mượn (chỉ cập nhật thông tin chung, không sửa chi tiết sách mượn)
+        // Cập nhật thông tin chung của phiếu mượn (không đổi ngày trả và chi tiết sách)
         [HttpPut("{id}")]
-        public IActionResult UpdateBorrow(int id, [FromBody] BorrowDTO borrow)
+        public async Task<IActionResult> UpdateBorrow(int id, [FromBody] BorrowDTO borrow)
         {
-            var existingBorrow = _context.Borrowings.Find(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var existingBorrow = await _context.Borrowings.FindAsync(id);
             if (existingBorrow == null)
                 return NotFound();
 
-            existingBorrow.MemberId = borrow.MemberId;
-            existingBorrow.BorrowDate = borrow.BorrowDate;
-            existingBorrow.DueDate = borrow.DueDate;
-            existingBorrow.ReturnDate = borrow.ReturnDate;
+            if (borrow.MemberId == null || !await _context.Members.AnyAsync(m => m.MemberId == borrow.MemberId.Value))
+                return BadRequest(new { message = "Thành viên không tồn tại." });
 
-            _context.SaveChanges();
+            var borrowDate = borrow.BorrowDate == default ? existingBorrow.BorrowDate : borrow.BorrowDate;
+            if (borrow.DueDate.Date < borrowDate.Date)
+                return BadRequest(new { message = "Hạn trả không được trước ngày mượn." });
+
+            existingBorrow.MemberId = borrow.MemberId;
+            existingBorrow.BorrowDate = borrowDate;
+            existingBorrow.DueDate = borrow.DueDate;
+
+            await _context.SaveChangesAsync();
             return Ok(new { Message = $"Cập nhật thành công phiếu mượn có mã {id}" });
         }
+
+        // Trả sách: cộng lại tồn kho, giữ nguyên chi tiết phiếu để còn lưu lịch sử
         [HttpPut("{borrowId}/return")]
         public async Task<IActionResult> ReturnBorrow(int borrowId, [FromQuery] DateTime? returnDate)
         {
-            try
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var borrow = await _context.Borrowings
+                .Include(b => b.BorrowDetails)
+                .FirstOrDefaultAsync(b => b.BorrowingId == borrowId);
+
+            if (borrow == null)
+                return NotFound(new { message = "Phiếu thuê không tồn tại!" });
+
+            if (borrow.ReturnDate != null)
+                return BadRequest(new { message = "Phiếu mượn này đã được trả trước đó." });
+
+            var actualReturnDate = returnDate ?? DateTime.Now;
+            if (actualReturnDate.Date < borrow.BorrowDate.Date)
+                return BadRequest(new { message = "Ngày trả không được trước ngày mượn." });
+
+            foreach (var detail in borrow.BorrowDetails)
             {
-                using (var transaction = await _context.Database.BeginTransactionAsync())
-                {
-                    // ✅ Xóa chi tiết phiếu thuê (BorrowDetails)
-                    var borrowDetails = _context.BorrowDetails.Where(b => b.BorrowId == borrowId);
-                    _context.BorrowDetails.RemoveRange(borrowDetails);
-
-                    // ✅ Cập nhật returnDate trong bảng Borrowings
-                    var borrow = await _context.Borrowings.FindAsync(borrowId);
-                    if (borrow == null)
-                    {
-                        return NotFound(new { message = "Phiếu thuê không tồn tại!" });
-                    }
-
-                    borrow.ReturnDate = returnDate ?? DateTime.Now;
-                    await _context.SaveChangesAsync();
-                    await transaction.CommitAsync();
-
-                    return Ok(new { message = "Trả sách thành công!" });
-                }
+                await ChangeStockAsync(detail.BookId, detail.Quantity);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Lỗi hệ thống", error = ex.Message });
-            }
+
+            borrow.ReturnDate = actualReturnDate;
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return Ok(new { message = "Trả sách thành công!" });
         }
+
+        // Xóa một sách khỏi phiếu mượn: hoàn lại tồn kho
         [HttpDelete("{borrowId}/remove-book/{bookId}")]
         public async Task<IActionResult> RemoveBookFromBorrowing(int borrowId, int bookId)
         {
-            try
-            {
-                var borrowing = await _context.Borrowings
-                    .Include(b => b.BorrowDetails)
-                    .FirstOrDefaultAsync(b => b.BorrowingId == borrowId);
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-                if (borrowing == null)
-                {
-                    return NotFound(new { message = "Phiếu mượn không tồn tại." });
-                }
+            var borrowing = await _context.Borrowings
+                .Include(b => b.BorrowDetails)
+                .FirstOrDefaultAsync(b => b.BorrowingId == borrowId);
 
-                var borrowDetail = borrowing.BorrowDetails.FirstOrDefault(d => d.BookId == bookId);
-                if (borrowDetail == null)
-                {
-                    return NotFound(new { message = "Sách không có trong phiếu mượn." });
-                }
+            if (borrowing == null)
+                return NotFound(new { message = "Phiếu mượn không tồn tại." });
 
-                // Xóa chi tiết sách khỏi phiếu mượn
-                _context.BorrowDetails.Remove(borrowDetail);
-                await _context.SaveChangesAsync();
+            if (borrowing.ReturnDate != null)
+                return BadRequest(new { message = "Phiếu mượn đã trả, không thể xóa sách khỏi phiếu." });
 
-                return Ok(new { message = "Xóa sách khỏi phiếu mượn thành công." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Lỗi hệ thống", error = ex.Message });
-            }
+            var borrowDetail = borrowing.BorrowDetails.FirstOrDefault(d => d.BookId == bookId);
+            if (borrowDetail == null)
+                return NotFound(new { message = "Sách không có trong phiếu mượn." });
+
+            await ChangeStockAsync(borrowDetail.BookId, borrowDetail.Quantity);
+            _context.BorrowDetails.Remove(borrowDetail);
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            return Ok(new { message = "Xóa sách khỏi phiếu mượn thành công." });
         }
 
-        // Xóa phiếu mượn (sẽ tự động xóa chi tiết phiếu mượn nhờ ràng buộc khóa ngoại)
+        // Xóa phiếu mượn: nếu chưa trả thì hoàn lại tồn kho của các sách đang mượn
         [HttpDelete("{id}")]
-        public IActionResult DeleteBorrow(int id)
+        public async Task<IActionResult> DeleteBorrow(int id)
         {
-            var borrow = _context.Borrowings.Find(id);
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var borrow = await _context.Borrowings
+                .Include(b => b.BorrowDetails)
+                .FirstOrDefaultAsync(b => b.BorrowingId == id);
+
             if (borrow == null)
                 return NotFound();
 
+            if (borrow.ReturnDate == null)
+            {
+                foreach (var detail in borrow.BorrowDetails)
+                {
+                    await ChangeStockAsync(detail.BookId, detail.Quantity);
+                }
+            }
+
+            _context.BorrowDetails.RemoveRange(borrow.BorrowDetails);
             _context.Borrowings.Remove(borrow);
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
 
             return Ok(new { Message = $"Xóa thành công phiếu mượn có mã {id}" });
         }
-    }
 
-    // Định nghĩa model cho request thêm phiếu mượn kèm sách
-    public class BorrowRequest
-    {
-        public int MemberId { get; set; }
-        public DateTime BorrowDate { get; set; }
-        public DateTime DueDate { get; set; }
-        public DateTime? ReturnDate { get; set; }
-        public int StaffId { get; set; }
-        public List<BorrowBook> Books { get; set; }
-    }
+        // Cộng (delta dương) hoặc trừ (delta âm) tồn kho của một sách
+        private async Task ChangeStockAsync(int? bookId, int delta)
+        {
+            if (bookId == null)
+                return;
 
-    public class BorrowBook
-    {
-        public int BookID { get; set; }
-        public int Quantity { get; set; }
+            var book = await _context.Books.FindAsync(bookId.Value);
+            if (book != null)
+                book.Quantity = (book.Quantity ?? 0) + delta;
+        }
     }
 }
